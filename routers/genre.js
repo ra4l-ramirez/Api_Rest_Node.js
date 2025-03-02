@@ -1,20 +1,17 @@
 const { Router } = require('express');
 const Genre = require('../models/Genre');
-const { check, validationResult } = require('express-validator'); // ❌ Se importaba mal "validationResut"
+const { validationResult, check} = require('express-validator'); // ❌ Se importaba mal "validationResut"
 
 const router = Router();
 
-router.post(
-  '/',
-  [
+router.post('/',  [
     check('Name', 'Invalid Name').not().isEmpty(),
     check('State', 'Invalid State').isIn(['active', 'inactive']), // ❌ Había un .not().isIn(...)
     check('Title', 'Invalid Title').not().isEmpty(),
     check('Description', 'Invalid Description').not().isEmpty(),
-   
-  ],
-  async function (req, res) {
-    try {
+  ],  async function (req, res) {
+    
+    try {      
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({ message: errors.array() }); // ❌ "messge" estaba mal escrito
@@ -28,28 +25,27 @@ router.post(
       genre.createdAt = new Date();
       genre.updatedAt = new Date();
 
-      await genre.save(); // Guardar en la base de datos
+      genre = await genre.save(); // Guardar en la base de datos
+      res.send(genre);
 
-      res.status(201).json({ message: 'Genre saved successfully', genre});
-      console.log(req.body);
     } catch (error) {
       console.log(error);
-      res.status(500).send('Server error');
+      res.status(500).send('Mensaje Error');
     }
-  }
-);
+
+});
 
 router.get('/',async function (req,res)  {
   try{
-      const genre = await Genre.find();
-      res.send(genre);
+      const genres = await Genre.find();
+      res.send(genres);
  
   } catch (error){
       console.log(error);
+      res.status(500).send('Mensaje error')
  
   }
- 
-      res.send('obteniendo')
-  });
+
+});
 
 module.exports = router;
