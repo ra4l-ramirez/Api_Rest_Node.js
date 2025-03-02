@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const Director = require('../models/Director');
+const Productora = require('../models/Productora');
 const { validationResult, check} = require('express-validator');
 
 const router = Router();
@@ -7,6 +7,8 @@ const router = Router();
 router.post('/',  [
     check('Nombre', 'Invalid Nombre').not().isEmpty(),
     check('Estado', 'Invalid Estado').isIn(['Activo', 'Inactivo']),
+    check('Slogan', 'Invalid Slogan').not().isEmpty(),
+    check('Descripcion', 'Invalid Descripcion').not().isEmpty(),
 ],  async function (req, res) {
     
     try {      
@@ -15,14 +17,16 @@ router.post('/',  [
         return res.status(400).json({ message: errors.array() });
       }
 
-      let director = new Director();
-      director.Nombre = req.body.Nombre;
-      director.Estado = req.body.Estado;
-      director.createdAt = new Date();
-      director.updatedAt = new Date();
+      let productora = new Productora();
+      productora.Nombre = req.body.Nombre;
+      productora.Estado = req.body.Estado;
+      productora.Slogan = req.body.Slogan;
+      productora.Descripcion = req.body.Descripcion;
+      productora.createdAt = new Date();
+      productora.updatedAt = new Date();
 
-      director = await director.save(); // Guardar en la base de datos
-      res.send(director);
+      productora = await productora.save(); // Guardar en la base de datos
+      res.send(productora);
 
     } catch (error) {
       console.log(error);
@@ -33,8 +37,8 @@ router.post('/',  [
 
 router.get('/',async function (req,res)  {
   try{
-      const directors = await Director.find();
-      res.send(directors);
+      const productoras = await Productora.find();
+      res.send(productoras);
  
   } catch (error){
       console.log(error);

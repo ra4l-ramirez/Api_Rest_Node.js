@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const Director = require('../models/Director');
+const Tipo = require('../models/Tipo');
 const { validationResult, check} = require('express-validator');
 
 const router = Router();
@@ -15,14 +15,14 @@ router.post('/',  [
         return res.status(400).json({ message: errors.array() });
       }
 
-      let director = new Director();
-      director.Nombre = req.body.Nombre;
-      director.Estado = req.body.Estado;
-      director.createdAt = new Date();
-      director.updatedAt = new Date();
+      let tipo = new Tipo();
+      tipo.Nombre = req.body.Nombre;
+      tipo.Estado = req.body.Estado;
+      tipo.createdAt = new Date();
+      tipo.updatedAt = new Date();
 
-      director = await director.save(); // Guardar en la base de datos
-      res.send(director);
+      tipo = await tipo.save(); // Guardar en la base de datos
+      res.send(tipo);
 
     } catch (error) {
       console.log(error);
@@ -33,8 +33,8 @@ router.post('/',  [
 
 router.get('/',async function (req,res)  {
   try{
-      const directors = await Director.find();
-      res.send(directors);
+      const tipos = await Tipo.find();
+      res.send(tipos);
  
   } catch (error){
       console.log(error);
