@@ -30,6 +30,7 @@ getConnection();
 app.use(express.json());
 
 app.use('/api/genre', require('./routers/genre'));
+app.use('/api/genre', require('./routers/genre'));
 
 app.listen(port, () => {
   console.log(`Servidor corriendo en el puerto ${port}`);
