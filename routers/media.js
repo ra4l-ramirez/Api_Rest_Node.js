@@ -72,5 +72,57 @@ router.get('/', async function(req, res) {
   }
 });
 
+//Update
+
+router.put('/:media_id',  [
+  check('Serial','invalid.Serial').not().isEmpty(),
+  check('Titulo','invalid.Titulo').not().isEmpty(),
+  check('Sinopsis','invalid.Sinopsis').not().isEmpty(),
+  check('Url','invalid.Url').not().isEmpty(),
+  check('Imagen','invalid.Imagen').not().isEmpty(),
+  check('Estreno','invalid.Estreno').not().isEmpty(),
+  check('Genero','invalid.Genero').not().isEmpty(),
+  check('Director','invalid.Director').not().isEmpty(),
+  check('Productora','invalid.Productora').not().isEmpty(),
+  check('Tipo','invalid.Tipo').not().isEmpty()
+],  async function (req, res) {
+  
+  try {      
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ message: errors.array() }); 
+    }
+    let media =await Media.findById(req.params.media_id);
+    
+    if (!media) {
+      return res.status(400).send("este ID no existe en media"); 
+    }
+
+    const serialExist = await Media.findOne({ Serial: req.body.Serial });
+    if (serialExist) {
+      return res.status(400).send('Serial ya Existe')
+    }
+
+    media.Serial = req.body.Serial;
+    media.Titulo = req.body.Titulo;
+    media.Sinopsis = req.body.Sinopsis;
+    media.Url = req.body.Url;
+    media.Imagen = req.body.Imagen;
+    media.Estreno = req.body.Estreno;
+    media.Genero = req.body.Genero._id;
+    media.Director = req.body.Director._id;
+    media.Productora = req.body.Productora._id;
+    media.Tipo = req.body.Tipo._id;
+    media.updatedAt = new Date();
+    
+    media = await media.save(); // Guardar en la base de datos
+    res.send(media);
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Mensaje Error');
+  }
+
+});
 
 module.exports = router;
