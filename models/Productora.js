@@ -6,7 +6,7 @@ const ProductoraSchema = Schema({
     createdAt: {type: Date, required: true},
     updatedAt: { type: Date, required: true},
     Slogan:{type:String, required: true},
-    Descripcion:{type:String, required: true},
+    Descripcion:{type:String, required: true}
 
 });
 module.exports = model('Productora', ProductoraSchema);

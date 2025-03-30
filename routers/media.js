@@ -98,11 +98,6 @@ router.put('/:media_id',  [
       return res.status(400).send("este ID no existe en media"); 
     }
 
-    const serialExist = await Media.findOne({ Serial: req.body.Serial });
-    if (serialExist) {
-      return res.status(400).send('Serial ya Existe')
-    }
-
     media.Serial = req.body.Serial;
     media.Titulo = req.body.Titulo;
     media.Sinopsis = req.body.Sinopsis;
@@ -123,6 +118,19 @@ router.put('/:media_id',  [
     res.status(500).send('Mensaje Error');
   }
 
+});
+
+router.get('/:mediaId', async function (req, res) {
+  try {
+      const media = await Media.findById(req.params.mediaId)
+      if (!media) {
+          return res.status(404).send('No existe media');
+      }
+      res.send(media);
+  } catch (error) {
+      console.log(error);
+      res.status(500).send('mensaje error')
+  }
 });
 
 module.exports = router;

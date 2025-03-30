@@ -1,8 +1,12 @@
 const express = require('express')
 const { getConnection } = require('./db/connection_mongoose')
+const cors = require('cors');
 require('dotenv').config()
+
 const app = express()
 const port = process.env.PORT;
+
+app.use(cors());
 
 getConnection();
 
@@ -19,3 +23,7 @@ app.use('/media', require('./routers/media'));
 app.listen(port, () => {
   console.log(`Servidor corriendo en el puerto ${port}`)
 });
+
+
+//Santiago Lopez Figueroa
+//Raul Fernando Ramirez
