@@ -120,9 +120,9 @@ router.put('/:media_id',  [
 
 });
 
-router.get('/:mediaId', async function (req, res) {
+router.get('/:media_id', async function (req, res) {
   try {
-      const media = await Media.findById(req.params.mediaId)
+      const media = await Media.findById(req.params.media_id)
       if (!media) {
           return res.status(404).send('No existe media');
       }
